@@ -1,14 +1,25 @@
 
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+import os
 import pickle
 import numpy as np
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-# Load trained crop recommendation model
-with open("model/crop_model.pkl", "rb") as file:
+# Find the project directory
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
+
+# Load trained ML model
+MODEL_PATH = os.path.join(
+    BASE_DIR, "model", "crop_model.pkl"
+)
+
+with open(MODEL_PATH, "rb") as file:
     model = pickle.load(file)
 
 
@@ -22,7 +33,10 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+
+    if not isinstance(data, dict):
+        return jsonify({"error": "Invalid JSON input"}), 400
 
     try:
         N = float(data["N"])
@@ -33,10 +47,15 @@ def predict():
         ph = float(data["ph"])
         rainfall = float(data["rainfall"])
 
-        features = np.array([[
+        values = [
             N, P, K, temperature,
             humidity, ph, rainfall
-        ]])
+        ]
+
+        if not all(np.isfinite(values)):
+            raise ValueError("Values must be finite numbers")
+
+        features = np.array([values])
 
         prediction = model.predict(features)
 
@@ -46,10 +65,10 @@ def predict():
 
     except (KeyError, TypeError, ValueError):
         return jsonify({
-            "error": "Please provide all seven valid input values."
+            "error": "Please provide all seven valid numeric values."
         }), 400
 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-  
+
