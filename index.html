@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>🌱 Crop Recommendation System</h1>
+    <p>Smart Farming with Machine Learning</p>
+</header>
+
+<main>
+
+    <section class="location">
+        <h2>Select Your Location</h2>
+
+        <label for="state">State</label>
+        <select id="state">
+            <option value="">Select State</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Telangana">Telangana</option>
+        </select>
+
+        <label for="district">District</label>
+        <input type="text" id="district"
+               placeholder="Enter your district">
+
+        <button type="button" onclick="getLocation()">
+            📍 Detect My Location
+        </button>
+
+        <p id="locationResult"></p>
+    </section>
+
+    <section class="soil">
+        <h2>Soil and Weather Information</h2>
+
+        <label>Nitrogen (N)</label>
+        <input type="number" id="N" placeholder="Enter N value">
+
+        <label>Phosphorus (P)</label>
+        <input type="number" id="P" placeholder="Enter P value">
+
+        <label>Potassium (K)</label>
+        <input type="number" id="K" placeholder="Enter K value">
+
+        <label>Temperature (°C)</label>
+        <input type="number" id="temperature" placeholder="Enter temperature">
+
+        <label>Humidity (%)</label>
+        <input type="number" id="humidity" placeholder="Enter humidity">
+
+        <label>Soil pH</label>
+        <input type="number" id="ph" placeholder="Enter soil pH">
+
+        <label>Rainfall (mm)</label>
+        <input type="number" id="rainfall" placeholder="Enter rainfall">
+
+        <button type="button" onclick="recommendCrop()">
+            Recommend Crop
+        </button>
+
+        <h2 id="result"></h2>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+                              </html>
+                              
